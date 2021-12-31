@@ -43,6 +43,7 @@ const Pregunta = ({setPresupuesto,setRestante,actualizarPregunta}) => {
                     className='u-full-width'
                     placeholder='Coloca tu presupuesto' 
                     onChange={definirPresupuesto}
+                    value={cantidad}
                 />
                 <input 
                     type="submit" 

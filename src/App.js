@@ -16,19 +16,19 @@ function App() {
 
   //useEffect que actualiza el restante:
   useEffect(()=>{
+
     // Agregar nuevo presupuesto
     if(crearGasto){
       setGastos([...gastos,gasto])
     };
+    
     // Resta del presupuesto actual
-    const presupuestoRestante = restante - gasto.cantidad
+    let presupuestoRestante = restante - gasto.cantidad;
+    console.log(presupuestoRestante);
     setRestante(presupuestoRestante);
     
     setCrearGasto(false);
-  },[gasto,crearGasto,gastos,restante])
-
-
-
+  },[gasto,crearGasto,gastos])
 
   return (
     <div className="container">
