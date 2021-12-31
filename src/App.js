@@ -20,15 +20,15 @@ function App() {
     // Agregar nuevo presupuesto
     if(crearGasto){
       setGastos([...gastos,gasto])
+
+      // Resta del presupuesto actual
+      let presupuestoRestante = restante - gasto.cantidad;
+      setRestante(presupuestoRestante);
+    
+      setCrearGasto(false);
     };
     
-    // Resta del presupuesto actual
-    let presupuestoRestante = restante - gasto.cantidad;
-    console.log(presupuestoRestante);
-    setRestante(presupuestoRestante);
-    
-    setCrearGasto(false);
-  },[gasto,crearGasto,gastos])
+  },[gasto,crearGasto,gastos,restante])
 
   return (
     <div className="container">
