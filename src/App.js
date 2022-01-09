@@ -6,14 +6,50 @@ import Pregunta from "./components/Pregunta";
 
 function App() {
 
+  let presupuestoIniciado = JSON.parse(localStorage.getItem('presupuesto'));
+  let restanteAlmacenado = JSON.parse(localStorage.getItem('restante'));
+  let gastosAlmacenado = JSON.parse(localStorage.getItem('gastos'));
+  let pregunta = JSON.parse(localStorage.getItem('pregunta'));
+
+  if(!presupuestoIniciado || !restanteAlmacenado || !gastosAlmacenado) {
+    presupuestoIniciado = 0;
+    restanteAlmacenado = 0;
+    gastosAlmacenado = [];
+    pregunta = true;
+  }
+  
   // Hooks
-  const [presupuesto, setPresupuesto] = useState(0);
-  const [restante, setRestante] = useState(0);
-  const [mostrarPregunta, actualizarPregunta] = useState(true);
-  const [gastos, setGastos] = useState([]);
-  const [gasto,setGasto ]= useState({});
+  const [presupuesto, setPresupuesto] = useState(presupuestoIniciado);
+  const [restante, setRestante] = useState(restanteAlmacenado);
+  const [gastos, setGastos] = useState(gastosAlmacenado);
+  const [mostrarPregunta, actualizarPregunta] = useState(Boolean(pregunta));
+  const [gasto, setGasto ]= useState({});
   const [crearGasto, setCrearGasto ] = useState(false);
 
+  // useEffect localStorage.
+
+  useEffect(()=>{
+    if(presupuestoIniciado || restanteAlmacenado || gastosAlmacenado || pregunta) { 
+      localStorage.setItem('presupuesto',presupuesto);
+      localStorage.setItem('restante',restante);
+      localStorage.setItem('gastos',JSON.stringify(gastos));
+      localStorage.setItem('pregunta',false)
+    } else {
+      localStorage.setItem('presupuesto',0);
+      localStorage.setItem('restante',0);
+      localStorage.setItem('gastos',JSON.stringify([]));
+      localStorage.setItem('pregunta',true)
+    }
+  },[
+    presupuestoIniciado,
+    restanteAlmacenado,
+    gastosAlmacenado,
+    gastos,
+    presupuesto,
+    restante,
+    pregunta
+  ])
+  
   //useEffect que actualiza el restante:
   useEffect(()=>{
 
@@ -29,6 +65,19 @@ function App() {
     };
     
   },[gasto,crearGasto,gastos,restante])
+
+  const limpiarLista = () => {
+    setGastos([]);
+    setRestante(presupuesto);
+  }
+
+  // Boton Reiniciar
+  const reiniciarPresupuesto = () => {
+    setGastos([]);
+    setRestante(0);
+    setPresupuesto(0);
+    actualizarPregunta(true);
+  }
 
   return (
     <div className="container">
@@ -57,6 +106,13 @@ function App() {
                   presupuesto={presupuesto}
                   restante={restante}
                 />
+                <hr/>
+                <button
+                  onClick={limpiarLista}
+                  >❌ Limpiar Lista</button>
+                <button
+                  onClick={reiniciarPresupuesto}
+                  >🔥 Reiniciar Presupuesto</button>
               </div>
             </div>
           )}
